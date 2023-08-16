@@ -93,7 +93,7 @@ export default function Home() {
           <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">PREÇO</div>
           <div className="font-bold w-[120px] whitespace-nowrap text-center">TOTAL</div>
         </div>
-        {familiaDadinho.map(e => <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-2 flex gap-2 [&:nth-child(even)]:bg-gray-300" >
+        {familiaDadinho.map(e => <div key={e.produto} className="bg-gray-100 p-2 align-middle border-2 border-black border-t-2 flex gap-2 [&:nth-child(even)]:bg-gray-300" >
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[60px] whitespace-nowrap text-center">{e.codigo}</div>
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[300px] whitespace-nowrap text-center">{e.produto}</div>
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[60px] whitespace-nowrap text-center">{e.peso}</div>
