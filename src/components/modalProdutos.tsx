@@ -13,7 +13,7 @@ export function ModalProdutos() {
             <img className="w-32" src="https://www.dadinhooriginal.com.br/wp-content/uploads/2016/02/BONECO-COM-LOGO-1.png" />
         </div>
         <div className="w-full flex items-center justify-center gap-4 flex-wrap">
-            {familiaBombons.map(e => <Produto produto={e} />)}
+            {familiaBombons.map(e => <Produto key={e.produto} produto={e} />)}
         </div>
 
     </div>
