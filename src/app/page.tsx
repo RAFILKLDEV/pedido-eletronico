@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <>
-
+      <ModalProdutos />
       <main className="p-10 text-xs w-[1000px]">
         <div className="flex w-full bg-gray-200">
           <img className="w-[180px] h-[170px] border-2 border-black border-b-0 border-r-0" src="https://www.dadinhooriginal.com.br/wp-content/uploads/2016/02/BONECO-COM-LOGO-1.png" />
@@ -104,7 +104,7 @@ export default function Home() {
           <div className="border-t-0 font-bold w-[120px] whitespace-nowrap text-center">{e.total}</div>
         </div>)}
       </main>
-      {/* <ModalProdutos /> */}
+
     </>
   )
 }

@@ -226,5 +226,15 @@ export const familiaDoceSaber = [
     },
 ]
 
+export const lista = [
+    familiaBombons,
+    familiaCobertos,
+    familiaDadinho,
+    familiaDoceSaber,
+    familiaGamadinho,
+    familiaInstitucional,
+    familiaPacoca,
+    familiaWaferELanchinhos
+]
 
 
