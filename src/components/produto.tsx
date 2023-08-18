@@ -7,7 +7,6 @@ export function Produto({ produto, filter, setFilter }: {
     setFilter: Function
 }) {
 
-
     return <div className="h-56 w-52 flex flex-col items-center bg-gray-200 border-black border-2 px-2 py-2">
         <img className="w-20" src="https://www.dadinhooriginal.com.br/wp-content/uploads/2016/02/BONECO-COM-LOGO-1.png" />
         <div className="w-full text-center font-bold">{produto?.produto}</div>
