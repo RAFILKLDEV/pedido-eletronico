@@ -1,8 +1,9 @@
 import { familiaBombons, familiaCobertos, familiaDadinho, familiaDoceSabor, familiaGamadinho, familiaInstitucional, familiaPacoca, familiaWaferELanchinhos, lista } from "@/app/produtos";
 import { Produto } from "./produto";
 import { useEffect, useState } from "react";
+import { produtoType } from "@/app/types";
 
-export function ModalProdutos() {
+export function ModalProdutos({ carrinho, setCarrinho, modal, setModal }: { carrinho: produtoType[], setCarrinho: Function, modal: boolean, setModal: Function }) {
 
     interface ListaProdutosType {
         codigo: number;
@@ -94,13 +95,14 @@ export function ModalProdutos() {
     return <div className=" flex flex-col z-10 absolute min-h-screen w-full top-0 bg-yellow-600 p-10 gap-12">
         <div className="w-full flex items-center justify-center gap-4">
             {familias.map((e, idx) => {
-                return <div onClick={() => habilitarFiltro(idx)} style={{ backgroundColor: filter == e.nome ? "green" : "inherit" }} className="h-52 w-80 border-black border-2 p-2 flex flex-col gap-1 items-center justify-center cursor-pointer">
+                return <div onClick={() => habilitarFiltro(idx)} style={{ backgroundColor: filter == e.nome ? "green" : "white" }} className="h-52 w-80 border-black border-2 p-2 flex flex-col gap-1 items-center justify-center cursor-pointer">
                     <img className="w-64 h-20" src={e.img} />
                     <div>{e.nome}</div>
                 </div>
             })}
         </div>
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-20">
+            <button className="w-32 bg-white text-center p-1 placeholder-black font-bold border-black border-2" onClick={() => setModal(false)}>Voltar</button>
             <input value={search} onChange={e => setSearch(e.target.value)} className="w-80 text-center p-1 placeholder-black font-bold border-black border-2" placeholder="Pesquisa..." />
         </div>
         <div className="w-full grid grid-cols-5 items-center justify-center gap-4 flex-wrap">
@@ -109,7 +111,7 @@ export function ModalProdutos() {
                     if (filter !== "") {
                         if (e.familia.toLowerCase().includes(filter.toLowerCase())) {
                             console.log("includes")
-                            return <Produto produto={e} filter={filter} setFilter={setFilter} />
+                            return <Produto setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
                         }
 
                         return
@@ -118,13 +120,13 @@ export function ModalProdutos() {
                     if (search !== "") {
                         if (e.produto.toLowerCase().includes(search.toLowerCase())) {
                             console.log("includes")
-                            return <Produto produto={e} filter={filter} setFilter={setFilter} />
+                            return <Produto setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
                         }
 
                         return
                     }
 
-                    return <Produto produto={e} filter={filter} setFilter={setFilter} />
+                    return <Produto setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
                 })
             }
         </div>
