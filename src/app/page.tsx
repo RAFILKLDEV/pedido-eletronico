@@ -1,7 +1,8 @@
 "use client"
 import { ModalProdutos } from "@/components/modalProdutos";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { produtoType } from "./types";
+import { Avisar } from "@/components/aviso";
 
 export default function Home() {
 
@@ -10,6 +11,13 @@ export default function Home() {
 
   // MODAL
   const [modal, setModal] = useState(false)
+  const [modalAviso, setModalAviso] = useState({
+    modal: false,
+    produto: "",
+    idx: 0,
+    aviso: "",
+    func: Function,
+  })
 
   // CADASTRO
   const [cnpj, setCnpj] = useState("")
@@ -89,8 +97,23 @@ export default function Home() {
     setCnpjEmail(response.EMAIL)
   }
 
+  function somarTotal() {
+    const total = carrinho.reduce((acc, value) => acc + value.preco * value.qtde, 0)
+    return total.toFixed(2)
+  }
+
+  function somarCaixas() {
+    const total = carrinho.reduce((acc, value) => acc + value.qtde, 0)
+    return total
+  }
+
+  function teste(event: <HTMLInputElement>) {
+    console.log(event.target.value)
+  }
+
   return (
     <>
+      {modalAviso?.modal && <Avisar aviso={modalAviso?.aviso} func={modalAviso?.func} setModal={setModalAviso} />}
       {modal && <ModalProdutos carrinho={carrinho} setCarrinho={setCarrinho} modal={modal} setModal={setModal} />}
       <main className="p-10 text-xs w-[1000px]">
         <div className="flex w-full bg-gray-100">
@@ -110,46 +133,46 @@ export default function Home() {
         </div>
         <div className="w-full">
           <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-2 flex gap-2">
-            <div className="font-bold">CÓDIGO:</div>
-            <input className="bg-inherit border-black border-r-2 pr-2" value={cnaeCodigo} onChange={e => setCnaeCodigo(e.target.value)}></input>
+            <div className="font-bold ">CÓDIGO:</div>
+            <input className="bg-inherit border-black border-r-2 pr-2 text-blue-950 font-bold w-16" value={cnaeCodigo} onChange={e => setCnaeCodigo(e.target.value)}></input>
             <div className="font-bold whitespace-nowrap">RAZÃO SOCIAL:</div>
-            <input className="bg-inherit break-normal w-full" value={razaoSocial} onChange={e => setRazaoSocial(e.target.value)}></input>
+            <input className="bg-inherit break-normal w-full text-blue-950 font-bold" value={razaoSocial} onChange={e => setRazaoSocial(e.target.value)}></input>
           </div>
           <div className="bg-gray-100 p-2 w-full align-middle border-2 border-black border-t-0 flex gap-2">
             <div className="font-bold">CNPJ:</div>
-            <input className="bg-inherit border-black border-r-2 pr-2 text-center font-bold" value={cnpj}
-              onChange={e => setCnpj(e.target.value)} onBlur={validarInput} />
+            <input className="bg-inherit border-black border-r-2 pr-2 text-center text-blue-950 font-bold" value={cnpj}
+              onChange={e => setCnpj(e.target.value)} onBlur={validarInput} onKeyDown={teste} />
             <div className="font-bold whitespace-nowrap">INSCR. ESTADUAL:</div>
-            <input className="bg-inherit w-full" value={inscEstadual} onChange={e => setInscEstadual(e.target.value)}></input>
+            <input className="bg-inherit w-full text-blue-950 font-bold" value={inscEstadual} onChange={e => setInscEstadual(e.target.value)}></input>
           </div>
           <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 flex gap-2">
             <div className="font-bold">RUA:</div>
-            <input className="bg-inherit w-full border-black border-r-2" value={logradouro} onChange={e => setLogradouro(e.target.value)}></input>
+            <input className="bg-inherit w-full border-black border-r-2 text-blue-950 font-bold" value={logradouro} onChange={e => setLogradouro(e.target.value)}></input>
             <div className="font-bold">BAIRRO:</div>
-            <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={bairro} onChange={e => setBairro(e.target.value)}></input>
+            <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={bairro} onChange={e => setBairro(e.target.value)}></input>
             <div className="font-bold">CIDADE:</div>
-            <input className="bg-inherit  border-black border-r-2 pr-2 w-96 whitespace-nowrap" value={cidade} onChange={e => setCidade(e.target.value)}></input>
+            <input className="bg-inherit  border-black border-r-2 pr-2 w-96 whitespace-nowrap text-blue-950 font-bold" value={cidade} onChange={e => setCidade(e.target.value)}></input>
             <div className="font-bold">ESTADO:</div>
-            <input className="bg-inherit w-52" value={estado} onChange={e => setEstado(e.target.value)}></input>
+            <input className="bg-inherit w-52 text-blue-950 font-bold" value={estado} onChange={e => setEstado(e.target.value)}></input>
           </div>
 
           <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 flex gap-2">
             <div className="font-bold">CEP:</div>
-            <input className="bg-inherit border-black border-r-2 pr-2 w-1/4" value={cep} onChange={e => setCep(e.target.value)}></input>
+            <input className="bg-inherit border-black border-r-2 pr-2 w-1/4 text-blue-950 font-bold" value={cep} onChange={e => setCep(e.target.value)}></input>
             <div className="font-bold">TELEFONE:</div>
-            <input className="bg-inherit  border-black border-r-2 pr-2 w-1/4" value={telefone} onChange={e => setTelefone(e.target.value)}></input>
+            <input className="bg-inherit  border-black border-r-2 pr-2 w-1/4 text-blue-950 font-bold" value={telefone} onChange={e => setTelefone(e.target.value)}></input>
             <div className="font-bold">TELEFONE:</div>
-            <input className="bg-inherit  border-black border-r-2 pr-2 w-1/4" value={telefone2} onChange={e => setTelefone2(e.target.value)}></input>
+            <input className="bg-inherit  border-black border-r-2 pr-2 w-1/4 text-blue-950 font-bold" value={telefone2} onChange={e => setTelefone2(e.target.value)}></input>
             <div className="font-bold">FAX:</div>
-            <input className="bg-inherit w-1/4" value={fax} onChange={e => setFax(e.target.value)}></input>
+            <input className="bg-inherit w-1/4 text-blue-950 font-bold" value={fax} onChange={e => setFax(e.target.value)}></input>
           </div>
           <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2">
             <div className="font-bold w-auto whitespace-nowrap">EMAIL:</div>
-            <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={cnpjEmail} onChange={e => setCnpjEmail(e.target.value)}></input>
+            <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={cnpjEmail} onChange={e => setCnpjEmail(e.target.value)}></input>
             <div className="font-bold w-auto whitespace-nowrap">EMAIL:</div>
-            <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={email} onChange={e => setEmail(e.target.value)}></input>
+            <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={email} onChange={e => setEmail(e.target.value)}></input>
             <div className="font-bold w-auto whitespace-nowrap">EMAIL P/ XML:</div>
-            <input className="bg-inherit w-full" value={XMLEmail} onChange={e => setXMLEmail(e.target.value)}></input>
+            <input className="bg-inherit w-full text-blue-950 font-bold" value={XMLEmail} onChange={e => setXMLEmail(e.target.value)}></input>
           </div>
         </div>
 
@@ -157,35 +180,35 @@ export default function Home() {
 
         <div className="mt-4 bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-2 flex gap-2 flex-nowrap">
           <div className="font-bold w-auto">Transportadora:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={transportadora} onChange={e => setTransportadora(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={transportadora} onChange={e => setTransportadora(e.target.value)}></input>
           <div className="font-bold w-auto">FRETE:</div>
-          <select className="bg-inherit border-black border-r-2 pr-2" value={frete} onChange={e => setFrete(e.target.value)}>
+          <select className="bg-inherit border-black border-r-2 pr-2 text-blue-950 font-bold" value={frete} onChange={e => setFrete(e.target.value)}>
             <option>CIF</option>
             <option>FOB</option>
           </select>
           <div className="font-bold w-auto">Telefone:</div>
-          <input className="bg-inherit w-full" value={telFrete} onChange={e => setTelFrete(e.target.value)}></input>
+          <input className="bg-inherit w-full text-blue-950 font-bold" value={telFrete} onChange={e => setTelFrete(e.target.value)}></input>
         </div>
         <div className="flex w-full bg-gray-200 ">
           <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
             <div className="font-bold w-auto whitespace-nowrap">CONDIÇÃO DE PAGAMENTO:</div>
-            <select className="bg-inherit border-black border-r-2 pr-2 w-full" value={condiPagamento} onChange={e => setCondiPagamento(e.target.value)}>
+            <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={condiPagamento} onChange={e => setCondiPagamento(e.target.value)}>
               <option>CRÉDITO EM CONTA</option>
               <option>BOLETO BANCARIO</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">Descontos em %:</div>
-            <input className="bg-inherit w-full" value={desconto} onChange={e => setDesconto(e.target.value)}></input>
+            <input className="bg-inherit w-full text-blue-950 font-bold" value={desconto} onChange={e => setDesconto(e.target.value)}></input>
           </div>
         </div>
         <div className="flex w-full bg-gray-200 ">
           <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
             <div className="font-bold w-auto whitespace-nowrap">TIPO DE VENDA:</div>
-            <select className="bg-inherit border-black border-r-2 pr-2 w-full" value={tipoVenda} onChange={e => setTipoVenda(e.target.value)}>
+            <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={tipoVenda} onChange={e => setTipoVenda(e.target.value)}>
               <option>VENDA</option>
               <option>BONIFICAÇÃO</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">CANAL:</div>
-            <select className="bg-inherit border-black border-r-2 pr-2 w-full" value={canal} onChange={e => setCanal(e.target.value)}>
+            <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={canal} onChange={e => setCanal(e.target.value)}>
               <option>ATACADO</option>
               <option>AUTO SERVIÇO</option>
               <option>CASH & CARRY</option>
@@ -195,12 +218,12 @@ export default function Home() {
               <option>EXPORTAÇÃO</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">TRIBUTAÇÃO:</div>
-            <select className="bg-inherit border-black border-r-2 pr-2 w-full" value={tributacao} onChange={e => setTributacao(e.target.value)}>
+            <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={tributacao} onChange={e => setTributacao(e.target.value)}>
               <option>SIMPLES</option>
               <option>RPA</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">SUBST. TRIBUTÁRIA:</div>
-            <select className="bg-inherit border-black border-r-2 pr-2 w-full" value={subsTributacao} onChange={e => setSubsTributacao(e.target.value)}>
+            <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={subsTributacao} onChange={e => setSubsTributacao(e.target.value)}>
               <option>SIM</option>
               <option>NÃO</option>
             </select>
@@ -211,27 +234,27 @@ export default function Home() {
 
         <div className="mt-4 bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-2 flex gap-2 flex-nowrap">
           <div className="font-bold w-auto whitespace-nowrap">N° PEDIDO:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={nPedido} onChange={e => setNPedido(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={nPedido} onChange={e => setNPedido(e.target.value)}></input>
           <div className="font-bold w-auto">DATA:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={dataComissao} onChange={e => setDataComissao(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={dataComissao} onChange={e => setDataComissao(e.target.value)}></input>
           <div className="font-bold w-auto whitespace-nowrap">TABELA:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={tabela} onChange={e => setTabela(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={tabela} onChange={e => setTabela(e.target.value)}></input>
           <div className="font-bold w-auto whitespace-nowrap">COD REPRE.:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={codRepre} onChange={e => setCodRepre(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={codRepre} onChange={e => setCodRepre(e.target.value)}></input>
           <div className="font-bold w-auto">COMISSÃO:</div>
-          <input className="bg-inherit w-full" value={comissao} onChange={e => setComissao(e.target.value)}></input>
+          <input className="bg-inherit w-full text-blue-950 font-bold" value={comissao} onChange={e => setComissao(e.target.value)}></input>
         </div>
         <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
           <div className="font-bold w-auto whitespace-nowrap">ANALISE DE CREDITO:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={analiseCre} onChange={e => setAnaliseCre(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={analiseCre} onChange={e => setAnaliseCre(e.target.value)}></input>
           <div className="font-bold w-auto whitespace-nowrap">LIBERAÇÃO FAT:</div>
-          <input className="bg-inherit border-black border-r-2 pr-2 w-full" value={liberacaoFat} onChange={e => setLiberacaoFat(e.target.value)}></input>
+          <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={liberacaoFat} onChange={e => setLiberacaoFat(e.target.value)}></input>
           <div className="font-bold w-auto whitespace-nowrap">DIGITADO POR:</div>
-          <input className="bg-inherit border-black pr-2 w-full" value={digitadoPor} onChange={e => setDigitadoPor(e.target.value)}></input>
+          <input className="bg-inherit border-black pr-2 w-full text-blue-950 font-bold" value={digitadoPor} onChange={e => setDigitadoPor(e.target.value)}></input>
         </div>
         <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
           <div className="font-bold w-auto whitespace-nowrap">OBERSERVAÇÕES:</div>
-          <input className="bg-inherit border-black pr-2 w-full" value={observacao} onChange={e => setObservacao(e.target.value)}></input>
+          <input className="bg-inherit border-black pr-2 w-full text-blue-950 font-bold" value={observacao} onChange={e => setObservacao(e.target.value)}></input>
         </div>
 
         {/* BOTÃO ADICIONAR PRODUTOS */}
@@ -242,7 +265,7 @@ export default function Home() {
 
         {/* TABELA DE PRODUTOS */}
 
-        <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-2 flex gap-2">
+        <div className="bg-gray-400 p-2 align-middle border-2 border-black border-t-2 flex gap-2">
           <div className="border-black border-r-2 pr-2 font-bold w-[60px] whitespace-nowrap text-center">CÓDIGO</div>
           <div className="border-black border-r-2 pr-2 font-bold w-[300px] whitespace-nowrap text-center">PRODUTO</div>
           <div className="border-black border-r-2 pr-2 font-bold w-[60px] whitespace-nowrap text-center">PESO</div>
@@ -250,34 +273,46 @@ export default function Home() {
           <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">C.FISCAL</div>
           <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">QTDE</div>
           <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">PREÇO</div>
-          <div className="font-bold w-[120px] whitespace-nowrap text-center">TOTAL</div>
+          <div className="font-bold w-[110px] whitespace-nowrap text-center">TOTAL</div>
         </div>
-        {carrinho?.map((e, idx) => <div key={e.produto + idx} className="bg-gray-100 p-2 align-middle border-2 border-black border-t-2 flex gap-2 [&:nth-child(even)]:bg-gray-300" >
+        {carrinho?.map((e, idx) => <div key={e.produto + idx} className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 flex gap-2 [&:nth-child(even)]:bg-gray-300" >
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[60px] whitespace-nowrap text-center">{e.codigo}</div>
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[300px] whitespace-nowrap text-center">{e.produto}</div>
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[60px] whitespace-nowrap text-center">{e.peso}</div>
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[90px] whitespace-nowrap text-center">{e.embalagem}</div>
           <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[80px] whitespace-nowrap text-center">{e.ClassFiscal}</div>
-          <input className="border-black border-r-2 pr-2 font-bold w-[80px] bg-inherit text-center" value={e.qtde} onChange={e => {
+          <input className="[] border-black border-r-2 pr-2 font-bold w-[80px] bg-inherit text-center m-0 webkit-outer-spin-button" type="number" value={e.qtde} onChange={el => {
             const values = [...carrinho]
-            values[idx].qtde = Number(e.target.value)
-            setCarrinho(values)
+            if (Number(el.target.value) <= 0 || null) {
+              if (confirm(`Deseja Remover "${e.produto}"?`)) {
+                values.splice(idx, 1)
+                setCarrinho(values)
+              }
+            } else {
+              values[idx].qtde = Number(el.target.value)
+              setCarrinho(values)
+            }
           }}></input>
-          <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[80px] whitespace-nowrap text-center">{e.preco}</div>
-          <div className="border-t-0 font-bold w-[120px] whitespace-nowrap text-center">{e.total}</div>
+          <input className="border-black border-r-2 border-t-0 p-0 pr-2 font-bold w-[80px] whitespace-nowrap text-center bg-inherit" type="number"
+            value={e.preco} onChange={el => {
+              const values = [...carrinho]
+              values[idx].preco = Number(el.target.value)
+              setCarrinho(values)
+            }}></input>
+          <div className="border-t-0 font-bold w-[110px] whitespace-nowrap text-center">R$ {(e.preco * e.qtde).toFixed(2)}</div>
         </div>)}
-
         {!carrinho.length && <div className="bg-yellow-100 p-2 align-middle border-2 border-black border-t-0 justify-center flex gap-2 [&:nth-child(even)]:bg-gray-300" >
           <div className="border-black border-t-0 pr-2 whitespace-nowrap text-center font-bold">VAZIO</div>
         </div>}
 
-        <div className="bg-yellow-100 p-2 align-middle border-2 border-black border-t-2 flex gap-2 mt-2">
-          <div className="border-black border-r-2 pr-2 font-bold w-[300px] whitespace-nowrap text-center">N° de Caixas</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">0</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">TOTAL</div>
-          <div className="font-bold w-[120px] whitespace-nowrap text-center">R$ {0}</div>
+        <div className="flex justify-center">
+          <div className="bg-gray-400 p-2 text-center border-2 w-96 border-black border-t-2 flex gap-2 mt-2">
+            <div className="border-black border-r-2 pr-2 font-bold w-[140px] whitespace-nowrap text-center">N° de Caixas</div>
+            <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">{somarCaixas()}</div>
+            <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">TOTAL</div>
+            <div className="font-bold w-[120px] whitespace-nowrap text-center">R${somarTotal()}</div>
+          </div>
         </div>
-
       </main>
     </>
   )
