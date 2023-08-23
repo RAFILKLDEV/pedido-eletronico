@@ -279,7 +279,7 @@ export default function Home() {
               <option>RPA</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">SUBST. TRIBUTÁRIA:</div>
-            <div className="bg-inherit pr-2 w-auto text-blue-950 font-bold">{temST()}</div>
+            <div className="bg-inherit pr-2 w-auto text-blue-950 font-bold" />
           </div>
         </div>
 

@@ -4,6 +4,7 @@ export type produtoType = {
     peso: string,
     embalagem: string,
     ClassFiscal: number,
+    familia: string,
     qtde: number,
     preco: number,
     total: number,

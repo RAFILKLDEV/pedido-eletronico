@@ -5,19 +5,7 @@ import { produtoType } from "@/app/types";
 
 export function ModalProdutos({ carrinho, setCarrinho, modal, setModal }: { carrinho: produtoType[], setCarrinho: Function, modal: boolean, setModal: Function }) {
 
-    interface ListaProdutosType {
-        codigo: number;
-        produto: string;
-        peso: string;
-        embalagem: string;
-        ClassFiscal: number;
-        preco: number;
-        total: number;
-        qtde: number;
-        familia: string;
-    }
-
-    const [list, setList] = useState<ListaProdutosType[]>([])
+    const [list, setList] = useState<produtoType[]>([])
     const [search, setSearch] = useState("")
     const [filter, setFilter] = useState("")
 
@@ -95,7 +83,7 @@ export function ModalProdutos({ carrinho, setCarrinho, modal, setModal }: { carr
     return <div className=" flex flex-col z-10 absolute min-h-screen w-full top-0 bg-yellow-600 p-10 gap-12">
         <div className="w-full flex items-center justify-center gap-4">
             {familias.map((e, idx) => {
-                return <div onClick={() => habilitarFiltro(idx)} style={{ backgroundColor: filter == e.nome ? "green" : "white" }} className="h-52 w-80 border-black border-2 p-2 flex flex-col gap-1 items-center justify-center cursor-pointer">
+                return <div key={e.nome} onClick={() => habilitarFiltro(idx)} style={{ backgroundColor: filter == e.nome ? "green" : "white" }} className="h-52 w-80 border-black border-2 p-2 flex flex-col gap-1 items-center justify-center cursor-pointer">
                     <img className="w-64 h-20" src={e.img} />
                     <div>{e.nome}</div>
                 </div>
@@ -111,7 +99,7 @@ export function ModalProdutos({ carrinho, setCarrinho, modal, setModal }: { carr
                     if (filter !== "") {
                         if (e.familia.toLowerCase().includes(filter.toLowerCase())) {
                             console.log("includes")
-                            return <Produto setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
+                            return <Produto key={e.produto} setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
                         }
 
                         return
@@ -120,13 +108,13 @@ export function ModalProdutos({ carrinho, setCarrinho, modal, setModal }: { carr
                     if (search !== "") {
                         if (e.produto.toLowerCase().includes(search.toLowerCase())) {
                             console.log("includes")
-                            return <Produto setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
+                            return <Produto key={e.produto} setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
                         }
 
                         return
                     }
 
-                    return <Produto setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
+                    return <Produto key={e.produto} setModalProduct={setModal} produto={e} carrinho={carrinho} setCarrinho={setCarrinho} />
                 })
             }
         </div>
