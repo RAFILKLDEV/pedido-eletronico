@@ -107,15 +107,66 @@ export default function Home() {
     return total
   }
 
-  function teste(event: <HTMLInputElement>) {
-    console.log(event.target.value)
+  function tributoTes(e: produtoType) {
+    if (estado == "SP") {
+      if (tipoVenda == "VENDA") {
+        if (tributacao == "SIMPLES") {
+          return e.tributos.vendas.vendaSimples
+        } else if (tributacao == "RPA") {
+          return e.tributos.vendas.vendaRpa
+        }
+      } else if (tipoVenda == "BONIFICAÇÃO") {
+        if (tributacao == "SIMPLES") {
+          return e.tributos.bonif.bonifSimples
+        } else if (tributacao == "RPA") {
+          return e.tributos.bonif.bonifRpa
+        }
+      }
+    } else {
+      if (tipoVenda == "VENDA") {
+        if (subsTributacao == "SIM") {
+          return e.tributos.vendas.vendaUfST
+        } else if (subsTributacao == "NÃO") {
+          return e.tributos.vendas.vendaUf
+        }
+      } else if (tipoVenda == "BONIFICAÇÃO") {
+        if (subsTributacao == "SIM") {
+          return e.tributos.bonif.bonifUfST
+        } else if (subsTributacao == "NÃO") {
+          return e.tributos.bonif.bonifUf
+        }
+      }
+    }
+    return "NADA"
+  }
+
+  function temST() {
+    switch (estado) {
+      case "SP": return "SIM"
+        break;
+      case "DF": return "SIM"
+        break;
+      case "MT": return "SIM"
+        break;
+      case "MG": return "SIM"
+        break;
+      case "PR": return "SIM"
+        break;
+      case "RJ": return "SIM"
+        break;
+    }
+
+    return "NÃO"
   }
 
   return (
     <>
       {modalAviso?.modal && <Avisar aviso={modalAviso?.aviso} func={modalAviso?.func} setModal={setModalAviso} />}
       {modal && <ModalProdutos carrinho={carrinho} setCarrinho={setCarrinho} modal={modal} setModal={setModal} />}
-      <main className="p-10 text-xs w-[1000px]">
+      <main className="p-10 text-xs w-[1050px]">
+
+        {/* CADASTRO */}
+
         <div className="flex w-full bg-gray-100">
           <img className="w-[180px] h-[170px] border-2 border-black border-b-0 border-r-0" src="https://www.dadinhooriginal.com.br/wp-content/uploads/2016/02/BONECO-COM-LOGO-1.png" />
           <div className="flex-col w-full">
@@ -123,9 +174,9 @@ export default function Home() {
               DOCE SABOR INDÚSTRIA E COMÉRCIO DE PRODUTOS ALIMENTÍCIOS EIRELI</div>
             <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 font-bold">
               CNPJ : 07.175.867/0002-08 - INSCRIÇÃO ESTADUAL :  143.154.297.110</div>
-            <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0">
+            <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 font-semibold">
               Rua Monsenhor Abreu, 73 - Pari - São Paulo - SP - CEP: 03035-115</div>
-            <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0">
+            <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 font-semibold">
               ADM DE VENDAS  (11) 2612-6270  Whastapp (11) 98365-0691</div>
             <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 border-b-0 text-red-700 font-semibold">
               pedidos@dsabor.com.br ou pedidos@dadinhooriginal.com.br</div>
@@ -141,7 +192,7 @@ export default function Home() {
           <div className="bg-gray-100 p-2 w-full align-middle border-2 border-black border-t-0 flex gap-2">
             <div className="font-bold">CNPJ:</div>
             <input className="bg-inherit border-black border-r-2 pr-2 text-center text-blue-950 font-bold" value={cnpj}
-              onChange={e => setCnpj(e.target.value)} onBlur={validarInput} onKeyDown={teste} />
+              onChange={e => setCnpj(e.target.value)} onBlur={validarInput} type="number" maxLength={14} />
             <div className="font-bold whitespace-nowrap">INSCR. ESTADUAL:</div>
             <input className="bg-inherit w-full text-blue-950 font-bold" value={inscEstadual} onChange={e => setInscEstadual(e.target.value)}></input>
           </div>
@@ -156,7 +207,7 @@ export default function Home() {
             <input className="bg-inherit w-52 text-blue-950 font-bold" value={estado} onChange={e => setEstado(e.target.value)}></input>
           </div>
 
-          <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 flex gap-2">
+          <div className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 flex gap-2 items-baseline">
             <div className="font-bold">CEP:</div>
             <input className="bg-inherit border-black border-r-2 pr-2 w-1/4 text-blue-950 font-bold" value={cep} onChange={e => setCep(e.target.value)}></input>
             <div className="font-bold">TELEFONE:</div>
@@ -166,7 +217,7 @@ export default function Home() {
             <div className="font-bold">FAX:</div>
             <input className="bg-inherit w-1/4 text-blue-950 font-bold" value={fax} onChange={e => setFax(e.target.value)}></input>
           </div>
-          <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2">
+          <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 items-baseline">
             <div className="font-bold w-auto whitespace-nowrap">EMAIL:</div>
             <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={cnpjEmail} onChange={e => setCnpjEmail(e.target.value)}></input>
             <div className="font-bold w-auto whitespace-nowrap">EMAIL:</div>
@@ -178,21 +229,23 @@ export default function Home() {
 
         {/* TRIBUTOS */}
 
-        <div className="mt-4 bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-2 flex gap-2 flex-nowrap">
+        <div className="mt-4 bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-2 flex gap-2 flex-nowrap items-baseline">
           <div className="font-bold w-auto">Transportadora:</div>
           <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={transportadora} onChange={e => setTransportadora(e.target.value)}></input>
           <div className="font-bold w-auto">FRETE:</div>
           <select className="bg-inherit border-black border-r-2 pr-2 text-blue-950 font-bold" value={frete} onChange={e => setFrete(e.target.value)}>
+            <option hidden></option>
             <option>CIF</option>
             <option>FOB</option>
           </select>
           <div className="font-bold w-auto">Telefone:</div>
           <input className="bg-inherit w-full text-blue-950 font-bold" value={telFrete} onChange={e => setTelFrete(e.target.value)}></input>
         </div>
-        <div className="flex w-full bg-gray-200 ">
-          <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
+        <div className="flex w-full bg-gray-200">
+          <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap items-baseline">
             <div className="font-bold w-auto whitespace-nowrap">CONDIÇÃO DE PAGAMENTO:</div>
             <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={condiPagamento} onChange={e => setCondiPagamento(e.target.value)}>
+              <option hidden></option>
               <option>CRÉDITO EM CONTA</option>
               <option>BOLETO BANCARIO</option>
             </select>
@@ -201,14 +254,16 @@ export default function Home() {
           </div>
         </div>
         <div className="flex w-full bg-gray-200 ">
-          <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
+          <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap items-baseline">
             <div className="font-bold w-auto whitespace-nowrap">TIPO DE VENDA:</div>
             <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={tipoVenda} onChange={e => setTipoVenda(e.target.value)}>
+              <option hidden></option>
               <option>VENDA</option>
               <option>BONIFICAÇÃO</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">CANAL:</div>
             <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={canal} onChange={e => setCanal(e.target.value)}>
+              <option hidden></option>
               <option>ATACADO</option>
               <option>AUTO SERVIÇO</option>
               <option>CASH & CARRY</option>
@@ -219,20 +274,18 @@ export default function Home() {
             </select>
             <div className="font-bold w-auto whitespace-nowrap">TRIBUTAÇÃO:</div>
             <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={tributacao} onChange={e => setTributacao(e.target.value)}>
+              <option hidden></option>
               <option>SIMPLES</option>
               <option>RPA</option>
             </select>
             <div className="font-bold w-auto whitespace-nowrap">SUBST. TRIBUTÁRIA:</div>
-            <select className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={subsTributacao} onChange={e => setSubsTributacao(e.target.value)}>
-              <option>SIM</option>
-              <option>NÃO</option>
-            </select>
+            <div className="bg-inherit pr-2 w-auto text-blue-950 font-bold">{temST()}</div>
           </div>
         </div>
 
         {/* COMISSÃO */}
 
-        <div className="mt-4 bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-2 flex gap-2 flex-nowrap">
+        <div className="mt-4 bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-2 flex gap-2 flex-nowrap items-baseline">
           <div className="font-bold w-auto whitespace-nowrap">N° PEDIDO:</div>
           <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={nPedido} onChange={e => setNPedido(e.target.value)}></input>
           <div className="font-bold w-auto">DATA:</div>
@@ -244,7 +297,7 @@ export default function Home() {
           <div className="font-bold w-auto">COMISSÃO:</div>
           <input className="bg-inherit w-full text-blue-950 font-bold" value={comissao} onChange={e => setComissao(e.target.value)}></input>
         </div>
-        <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap">
+        <div className="bg-gray-100 w-full p-2 align-middle border-2 border-black border-t-0 flex gap-2 flex-nowrap items-baseline">
           <div className="font-bold w-auto whitespace-nowrap">ANALISE DE CREDITO:</div>
           <input className="bg-inherit border-black border-r-2 pr-2 w-full text-blue-950 font-bold" value={analiseCre} onChange={e => setAnaliseCre(e.target.value)}></input>
           <div className="font-bold w-auto whitespace-nowrap">LIBERAÇÃO FAT:</div>
@@ -265,23 +318,30 @@ export default function Home() {
 
         {/* TABELA DE PRODUTOS */}
 
-        <div className="bg-gray-400 p-2 align-middle border-2 border-black border-t-2 flex gap-2">
-          <div className="border-black border-r-2 pr-2 font-bold w-[60px] whitespace-nowrap text-center">CÓDIGO</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[300px] whitespace-nowrap text-center">PRODUTO</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[60px] whitespace-nowrap text-center">PESO</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[90px] whitespace-nowrap text-center">EMBALAGEM</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">C.FISCAL</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">QTDE</div>
-          <div className="border-black border-r-2 pr-2 font-bold w-[80px] whitespace-nowrap text-center">PREÇO</div>
-          <div className="font-bold w-[110px] whitespace-nowrap text-center">TOTAL</div>
+        <div className="bg-gray-400 p-2 border-2 border-black border-t-2 grid grid-cols-[60px_320px_60px_95px_80px_50px_50px_50px_70px_auto]">
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">CÓDIGO</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">PRODUTO</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">PESO</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">EMBALAGEM</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">C.FISCAL</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">I.P.I</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">TES</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">QTDE</div>
+          <div className="border-black border-r-2 font-bold whitespace-nowrap text-center">PREÇO</div>
+          <div className="font-bold  whitespace-nowrap text-center">TOTAL</div>
         </div>
-        {carrinho?.map((e, idx) => <div key={e.produto + idx} className="bg-gray-100 p-2 align-middle border-2 border-black border-t-0 flex gap-2 [&:nth-child(even)]:bg-gray-300" >
-          <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[60px] whitespace-nowrap text-center">{e.codigo}</div>
-          <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[300px] whitespace-nowrap text-center">{e.produto}</div>
-          <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[60px] whitespace-nowrap text-center">{e.peso}</div>
-          <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[90px] whitespace-nowrap text-center">{e.embalagem}</div>
-          <div className="border-black border-r-2 border-t-0 pr-2 font-bold w-[80px] whitespace-nowrap text-center">{e.ClassFiscal}</div>
-          <input className="[] border-black border-r-2 pr-2 font-bold w-[80px] bg-inherit text-center m-0 webkit-outer-spin-button" type="number" value={e.qtde} onChange={el => {
+
+        {/* LISTA DE PRODUTOS */}
+
+        {carrinho?.map((e, idx) => <div key={e.produto + idx} className="bg-gray-200 p-2 border-2 border-black border-t-0 grid grid-cols-[60px_320px_60px_95px_80px_50px_50px_50px_70px_auto] [&:nth-child(even)]:bg-gray-300" >
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{e.codigo}</div>
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{e.produto}</div>
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{e.peso}</div>
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{e.embalagem}</div>
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{e.ClassFiscal}</div>
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{e.tributos.ipi}</div>
+          <div className="border-black border-r-2 border-t-0 font-bold whitespace-nowrap text-center">{tributoTes(e)}</div>
+          <input className="[] border-black border-r-2 font-bold bg-inherit text-center m-0 webkit-outer-spin-button" type="number" value={e.qtde} onChange={el => {
             const values = [...carrinho]
             if (Number(el.target.value) <= 0 || null) {
               if (confirm(`Deseja Remover "${e.produto}"?`)) {
@@ -293,17 +353,22 @@ export default function Home() {
               setCarrinho(values)
             }
           }}></input>
-          <input className="border-black border-r-2 border-t-0 p-0 pr-2 font-bold w-[80px] whitespace-nowrap text-center bg-inherit" type="number"
+          <input className="border-black border-r-2 border-t-0 p-0 font-bold whitespace-nowrap text-center bg-inherit" type="number"
             value={e.preco} onChange={el => {
               const values = [...carrinho]
               values[idx].preco = Number(el.target.value)
               setCarrinho(values)
             }}></input>
-          <div className="border-t-0 font-bold w-[110px] whitespace-nowrap text-center">R$ {(e.preco * e.qtde).toFixed(2)}</div>
+          <div className="border-t-0 font-bold whitespace-nowrap text-center">R$ {(e.preco * e.qtde).toFixed(2)}</div>
         </div>)}
-        {!carrinho.length && <div className="bg-yellow-100 p-2 align-middle border-2 border-black border-t-0 justify-center flex gap-2 [&:nth-child(even)]:bg-gray-300" >
+
+        {/* CARRINHO VAZIO */}
+
+        {!carrinho.length && <div className="bg-gray-200 p-2 align-middle border-2 border-black border-t-0 justify-center flex gap-2 [&:nth-child(even)]:bg-gray-300" >
           <div className="border-black border-t-0 pr-2 whitespace-nowrap text-center font-bold">VAZIO</div>
         </div>}
+
+        {/* TOTAL */}
 
         <div className="flex justify-center">
           <div className="bg-gray-400 p-2 text-center border-2 w-96 border-black border-t-2 flex gap-2 mt-2">

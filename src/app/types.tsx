@@ -5,6 +5,21 @@ export type produtoType = {
     embalagem: string,
     ClassFiscal: number,
     qtde: number,
-    preco: number
-    total: number
+    preco: number,
+    total: number,
+    tributos: {
+        ipi: string,
+        vendas: {
+            vendaSimples: number,
+            vendaRpa: number,
+            vendaUf: number,
+            vendaUfST: number
+        },
+        bonif: {
+            bonifRpa: number,
+            bonifSimples: number,
+            bonifUf: number,
+            bonifUfST: number
+        }
+    }
 }
